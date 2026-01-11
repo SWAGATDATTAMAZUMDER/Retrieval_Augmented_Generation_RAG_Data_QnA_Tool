@@ -19,26 +19,26 @@ This approach helps reduce hallucinations and ensures responses remain aligned w
 
 ---
 
-## ✨ Features
+##  Features
 
-- 📄 **Multi-Document Support**  
+-  **Multi-Document Support**  
   Query across multiple PDFs such as SOPs, training manuals, and treatment workflows  
 
-- 🔍 **Context-Aware Retrieval**  
+-  **Context-Aware Retrieval**  
   Relevant document sections are retrieved before generating answers  
 
-- ⚡ **Efficient Vector Search**  
+-  **Efficient Vector Search**  
   Uses Chroma / FAISS for fast semantic similarity search  
 
-- 🎨 **Streamlit Interface**  
+-  **Streamlit Interface**  
   Simple UI for asking questions without interacting with notebooks  
 
-- 🔐 **Secure API Handling**  
+-  **Secure API Handling**  
   API keys are never hard-coded and are handled securely  
 
 ---
 
-## 🗂 Project Structure
+##  Project Structure
 
 ```
 ├── RAG_Engine.py         # Core backend RAG engine
@@ -53,15 +53,15 @@ This approach helps reduce hallucinations and ensures responses remain aligned w
 
 ## ⚙️ Setup & Usage
 
-### 1️⃣ Install Dependencies
+### 1. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Add Documents
+### 2️. Add Documents
 Place all reference PDF files inside the `documents/` folder.
 
-### 3️⃣ Run the Application
+### 3️. Run the Application
 ```bash
 streamlit run streamlit_app.py
 ```
@@ -70,7 +70,7 @@ Once started, open the displayed URL (usually `http://localhost:8501`) to access
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Python** – Core programming language  
 - **LangChain** – RAG pipeline orchestration  
@@ -81,14 +81,14 @@ Once started, open the displayed URL (usually `http://localhost:8501`) to access
 
 ---
 
-## 🔄 Restarting the App
+##  Restarting the App
 
 If you restart your Codespace or close the browser, the Streamlit app will stop running.  
 Follow the steps in **[RESTART.md](./RESTART.md)** to bring it back up quickly.
 
 ---
 
-## 🎯 Purpose & Learning Goals
+##  Purpose & Learning Goals
 
 This project was built as a hands-on learning exercise to explore:
 
@@ -101,8 +101,7 @@ The focus is on clarity, correctness, and extensibility, rather than production 
 
 ---
 
-## 👤 Author
-
+##  Author:
 **Swagat Datta Mazumder**  
 Aspiring Data Analyst & Engineer  
 Exploring applied AI, data systems, and real-world problem solving
