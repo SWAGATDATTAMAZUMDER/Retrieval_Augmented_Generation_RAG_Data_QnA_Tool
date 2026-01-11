@@ -1,5 +1,5 @@
 # Medi-Context RAG Explorer
-# 🔎 Retrieval-Augmented Generation (RAG) Data QnA Tool
+# Retrieval-Augmented Generation (RAG) Data QnA Tool
 
 This project is a **Retrieval-Augmented Generation (RAG)** based Question-Answering system that allows users to query multiple **medical reference documents** and receive **context-aware, AI-generated answers**.
 
@@ -7,7 +7,7 @@ The core logic is implemented as a **backend RAG engine**, while a lightweight *
 
 ---
 
-## 🧠 What This Project Does
+## What This Project Does
 
 - Loads and processes multiple medical PDF documents  
 - Converts document text into vector embeddings  
