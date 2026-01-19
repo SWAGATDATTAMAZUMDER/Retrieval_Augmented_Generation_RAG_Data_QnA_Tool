@@ -8,7 +8,7 @@ from langchain.chains import RetrievalQA
 
 
 # 1.) Loading the existing Database (The "Brain" of the engine) #
-def load_vectostore(persist_directory = "./chroma_db"):
+def load_vectorstore(persist_directory = "./chroma_db"):
     #To ensure matching the embedding model we used in the create_db.py#
     embedding_function = SentenceTransformerEmbeddings(model_name = "all-MiniLM-L6-v2")
 
