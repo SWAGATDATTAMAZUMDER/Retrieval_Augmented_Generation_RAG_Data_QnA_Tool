@@ -1,77 +1,52 @@
 # RAG_Engine.py
 
 import os
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import RetrievalQA
 
 
-def load_documents(documents_path="documents"):
-    pages = []
+# 1.) Loading the existing Database (The "Brain" of the engine) #
+def load_vectostore(persist_directory = "./chroma_db"):
+    #To ensure matching the embedding model we used in the create_db.py#
+    embedding_function = SentenceTransformerEmbeddings(model_name = "all-MiniLM-L6-v2")
 
-    for file_name in os.listdir(documents_path):
-        if file_name.endswith(".pdf"):
-            file_path = os.path.join(documents_path, file_name)
-            loader = PyPDFLoader(file_path)
-            pages.extend(loader.load())
-
-    return pages
-
-
-def chunk_documents(pages, chunk_size=200, overlap=50):
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=overlap,
-        length_function=len,
-        is_separator_regex=False,
-    )
-
-    chunks = text_splitter.split_documents(pages)
-    return chunks
-
-
-def create_or_load_vectorstore(chunks, persist_directory="vectorstore"):
-    embeddings = SentenceTransformerEmbeddings(
-        model_name="all-MiniLM-L6-v2"
-    )
-
-    if os.path.exists(persist_directory):
+    if os.path.exists(persist_directory) :
         vector_store = Chroma(
             persist_directory=persist_directory,
-            embedding_function=embeddings
+            embedding_function=embedding_function,
         )
-    else:
-        vector_store = Chroma.from_documents(
-            documents=chunks,
-            embedding=embeddings,
-            persist_directory=persist_directory
-        )
-        vector_store.persist()
-
-    return vector_store
-
-
-def create_qa_chain(vector_store):
+        return vector_store
+    else :
+        print(f"Error : Could not find the database at the {persist_directory}")
+        return None
+    
+# Creating the Logic Chain#
+def create_qa_chain(vector_store) : 
+    # Ensuring the API Key is set #
+    if "Gemini_API_KEY" not in os.environ:
+        raise ValueError("Gemini API Key is missing !")
+    
     llm = ChatGoogleGenerativeAI(
-        model="gemini-pro",
-        temperature=0
+        model="gemini-1.5-flash",
+        temperature=0,
+        google_api_key=os.environ["Gemini_API_KEY"]
     )
 
-    retriever = vector_store.as_retriever()
+    # To retireve/Search for the 3 most relevant pages #
+    retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
-        chain_type="refine",
+        chain_type="stuff",#using 'stuff' as it is faster than 'refine'#
         return_source_documents=True
     )
 
     return qa_chain
 
-
-def answer_question(query, qa_chain):
+# 3) To Ask and answer the questions #
+def answer_question(query, qa_chain) :
     result = qa_chain.invoke({"query": query})
     return result["result"], result["source_documents"]
