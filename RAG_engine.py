@@ -4,7 +4,7 @@ import os
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chains import RetrievalQA
+from langchain_community.chains import RetrievalQA
 
 
 # 1.) Loading the existing Database (The "Brain" of the engine) #
