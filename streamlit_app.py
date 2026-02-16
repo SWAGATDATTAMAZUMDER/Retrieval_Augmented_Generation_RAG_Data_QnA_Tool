@@ -57,10 +57,12 @@ if "qa_chain" not in st.session_state:
 # Question Input #
 # ========================= #
 # Only to show the chat input if the system is ready #
-if "qa_chain" in st.session_state: 
+if "qa_chain" in st.session_state:
+    # Ask a question about the document(s). # 
     question = st.text_area(
-        # Ask a question about the document(s). #
+        label="Ask a question from the documents."
         placeholder="What is the state-wide policy for AMR Containment ?",
+        height=100
     )
 
     if st.button("Get Answer") and question:
