@@ -60,7 +60,7 @@ if "qa_chain" not in st.session_state:
 if "qa_chain" in st.session_state:
     # Ask a question about the document(s). # 
     question = st.text_area(
-        label="Ask a question from the documents."
+        label="Ask a question from the documents.",
         placeholder="What is the state-wide policy for AMR Containment ?",
         height=100
     )
