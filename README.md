@@ -9,8 +9,8 @@ The core logic is implemented as a **backend RAG engine**, while a lightweight *
 
 ## What This Project Does
 
-- Loads and processes multiple medical PDF documents  
-- Converts document text into vector embeddings  
+- **Loads and processes** multiple medical PDF documents  
+- **Converts document text** into **vector** embeddings using sentence transformers 
 - Stores embeddings in a vector database  
 - Retrieves the most relevant document context for a user query  
 - Uses **Google Gemini** to generate answers grounded in the source documents  
@@ -74,10 +74,26 @@ Once started, open the displayed URL (usually `http://localhost:8501`) to access
 
 - **Python** – Core programming language  
 - **LangChain** – RAG pipeline orchestration  
-- **Chroma / FAISS** – Vector database  
+- **ChromaDB** – Vector database for embeddings
+- **Sentence Transformers** - Text embedding model
 - **pypdf** – PDF text extraction  
-- **Google Gemini API** – Large Language Model  
+- **Google Gemini API (Gemini 2.5 flash)** – Large Language Model  
 - **Streamlit** – Frontend interface  
+
+---
+## 🔄 Updating the Database
+
+If you add new PDFs or modify existing ones:
+bash
+## Delete the old database
+rm -rf chroma_db/  # On Windows: rmdir /s chroma_db
+
+# Rebuild with updated documents
+python create_db.py
+
+# Restart the app
+streamlit run streamlit_app.py
+
 
 ---
 
@@ -88,6 +104,28 @@ Follow the steps in **[RESTART.md](./RESTART.md)** to bring it back up quickly.
 
 ---
 
+## 📝 How It Works
+
+1. **Document Processing** (`create_db.py`)
+- Reads PDFs from `documents/` folder
+- Splits text into chunks
+- Generates embeddings using SentenceTransformers
+- Stores vectors in ChromaDB
+
+2. **Query Processing** (`RAG_engine.py`)
+- Converts user question into embedding
+- Searches ChromaDB for 3 most relevant chunks
+- Sends question + context to Gemini
+- Returns AI-generated answer with sources
+
+3. **User Interface** (`streamlit_app.py`)
+- Accepts API key and question
+- Displays answer and source documents
+- Shows document excerpts for verification
+
+---
+
+---
 ##  Purpose & Learning Goals
 
 This project was built as a hands-on learning exercise to explore:
@@ -103,5 +141,5 @@ The focus is on clarity, correctness, and extensibility, rather than production 
 
 ##  Author:
 **Swagat Datta Mazumder**  
-Aspiring Data Analyst & Engineer  
+Early career engineer focused on AI implementation and data systems 
 Exploring applied AI, data systems, and real-world problem solving
