@@ -4,7 +4,7 @@ import os
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chains.retrieval_qa.base import RetrievalQA
+from langchain.chains import RetrievalQA
 
 
 # 1.) Loading the existing Database (The "Brain" of the engine) #
@@ -24,6 +24,16 @@ def load_vectorstore(persist_directory = "./chroma_db"):
     
 # Creating the Logic Chain#
 def create_qa_chain(vector_store) : 
+
+    import asyncio
+
+    # Ensuring Streamlit thread has an event loop #
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
     # Ensuring the API Key is set #
     if "Gemini_API_KEY" not in os.environ:
         raise ValueError("Gemini API Key is missing !")
@@ -34,8 +44,8 @@ def create_qa_chain(vector_store) :
         google_api_key=os.environ["Gemini_API_KEY"]
     )
 
-    # To retireve/Search for the 3 most relevant pages #
-    retriever = vector_store.as_retriever(search_kwargs={"k": 3})
+    # To retireve/Search for the 4 most relevant retrieved chunks #
+    retriever = vector_store.as_retriever(search_kwargs={"k": 6})
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
@@ -49,4 +59,10 @@ def create_qa_chain(vector_store) :
 # 3) To Ask and answer the questions #
 def answer_question(query, qa_chain) :
     result = qa_chain.invoke({"query": query})
+    
+    print("\n The Retrieved Documents: \n")
+
+    for i, doc in enumerate(result["source_documents"], 1):
+        print(f"Source {i}:\n{doc.page_content}\n")
+
     return result["result"], result["source_documents"]
