@@ -29,7 +29,7 @@ def create_qa_chain(vector_store) :
         raise ValueError("Gemini API Key is missing !")
     
     llm = ChatGoogleGenerativeAI(
-        model="gemini-pro",
+        model="gemini-2.5-flash",
         temperature=0,
         google_api_key=os.environ["Gemini_API_KEY"]
     )
