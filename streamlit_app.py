@@ -17,7 +17,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📄 MediContext RAG Explorer")
+st.title("MediContext RAG Explorer")
 st.write(
     "Ask questions about your PDF documents using this Retrieval-Augmented Generation (RAG) System."
 )
@@ -79,7 +79,7 @@ if "qa_chain" in st.session_state:
         if sources:
             with st.expander(" Viewing Source Documents "):
                 for i, doc in enumerate(sources, start=1):
-                    st.write(f"**Source {i}:** {doc.metadata.get('sources', 'Unknown')}")
+                    st.write(f"**Source {i}:** {doc.metadata.get('source', 'Unknown')}")
                     # To show the first 200 characters from the documents. #
                     st.write(f"_{doc.page_content[:200]}..._")
 else:
