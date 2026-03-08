@@ -12,12 +12,12 @@ from RAG_engine import (
 # Page config
 # =========================
 st.set_page_config(
-    page_title="📄 MediContext RAG Explorer",
+    page_title="MediContext RAG Explorer",
     page_icon="📄",
     layout="wide"
 )
 
-st.title("MediContext RAG Explorer")
+st.title("📄 MediContext RAG Explorer")
 st.write(
     "Ask questions about your PDF documents using this Retrieval-Augmented Generation (RAG) System."
 )
