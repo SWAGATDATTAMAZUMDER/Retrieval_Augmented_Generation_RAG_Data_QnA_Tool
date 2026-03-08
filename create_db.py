@@ -29,6 +29,13 @@ def create_vector_db() :
     for pdf_file in pdf_files:
         file_path = os.path.join(documents_folder, pdf_file)
         loader = PyPDFLoader(file_path)
+
+        pdf_docs = loader.load()
+
+        # Adding metadata for each page and documents being referred #
+        for doc in pdf_docs:
+            doc.metadata["source"] = pdf_file
+
         documents.extend(loader.load())
         print(f" - Loaded: {pdf_file}")
 
